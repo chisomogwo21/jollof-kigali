@@ -1,0 +1,7 @@
+{
+  "name": "Jollof Kigali - Premium Nigerian Dining",
+  "description": "A high-end restaurant website for Jollof Kigali, featuring an online ordering system, reservation booking, and a comprehensive CMS admin dashboard.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
