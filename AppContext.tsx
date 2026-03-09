@@ -91,6 +91,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           image: item.image_url,
           isFeatured: item.is_featured,
           isChefRecommendation: item.is_chef_recommendation,
+          proteinPrices: item.protein_prices,
         })));
       }
 
