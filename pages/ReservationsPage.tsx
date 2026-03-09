@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useApp } from '../AppContext';
 import { Calendar, Clock, Users, Loader2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import SEO from '../components/SEO';
 
 const ReservationsPage: React.FC = () => {
   const { updateReservations, reservations, settings } = useApp();
@@ -65,6 +66,7 @@ const ReservationsPage: React.FC = () => {
   if (submitted) {
     return (
       <div className="pt-40 pb-24 px-4 text-center">
+        <SEO title="Reservation Confirmed" url="/reservations" />
         <h1 className="text-4xl md:text-6xl font-bold mb-6 serif text-gold">Booking Request Sent</h1>
         <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">We've received your request for {formData.date} at {formData.time}. Our team will contact you shortly to confirm your table.</p>
         <button onClick={() => window.location.hash = '/'} className="px-8 py-3 bg-gold text-black font-bold uppercase tracking-widest">Return Home</button>
@@ -74,6 +76,11 @@ const ReservationsPage: React.FC = () => {
 
   return (
     <div className="pt-32 pb-24 bg-[#0A0A0A] min-h-screen">
+      <SEO
+        title="Reservations"
+        description={content.subheadline || "Reserve your table at Jollof Kigali."}
+        url="/reservations"
+      />
       <div className="max-w-4xl mx-auto px-4">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4 serif">{content.headline}</h1>

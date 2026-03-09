@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { HashRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { AppProvider, useApp } from './AppContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -80,11 +81,13 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <AppProvider>
-      <HashRouter>
-        <AppContent />
-      </HashRouter>
-    </AppProvider>
+    <HelmetProvider>
+      <AppProvider>
+        <HashRouter>
+          <AppContent />
+        </HashRouter>
+      </AppProvider>
+    </HelmetProvider>
   );
 };
 

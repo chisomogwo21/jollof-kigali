@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useApp } from '../AppContext';
+import SEO from '../components/SEO';
 
 const About: React.FC = () => {
   const { settings } = useApp();
@@ -8,6 +9,12 @@ const About: React.FC = () => {
 
   return (
     <div className="pt-32 pb-24 bg-[#0A0A0A] min-h-screen">
+      <SEO
+        title="Our Story"
+        description={content.storyText1}
+        image={content.mainImage}
+        url="/about"
+      />
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
           <div>

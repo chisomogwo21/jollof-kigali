@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../AppContext';
 import { Trash2, ShoppingCart, MessageCircle, CreditCard, Loader2, Smartphone, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import SEO from '../components/SEO';
 
 const OrderPage: React.FC = () => {
   const { cart, removeFromCart, clearCart, settings, updateOrders, orders } = useApp();
@@ -126,6 +127,7 @@ const OrderPage: React.FC = () => {
   if (placed) {
     return (
       <div className="pt-40 pb-24 px-4 text-center">
+        <SEO title="Order Received" url="/order" />
         <h1 className="text-4xl md:text-6xl font-bold mb-6 serif text-gold">Thank You!</h1>
         <p className="text-xl text-gray-400 mb-10">Your order has been received. We are processing it now.</p>
         <button onClick={() => window.location.hash = '/'} className="px-8 py-3 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-colors">Back to Home</button>
@@ -135,6 +137,11 @@ const OrderPage: React.FC = () => {
 
   return (
     <div className="pt-32 pb-24 bg-[#0A0A0A] min-h-screen relative">
+      <SEO
+        title="Checkout Flow"
+        description="Complete your order at Jollof Kigali. Enjoy the authentic taste of Nigeria delivered to your door."
+        url="/order"
+      />
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-3 gap-12">
         {/* Left: Cart Items */}
         <div className="lg:col-span-2">

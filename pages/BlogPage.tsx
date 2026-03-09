@@ -2,6 +2,7 @@
 import React from 'react';
 import { useApp } from '../AppContext';
 import { Calendar, User, ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const BlogPage: React.FC = () => {
   const { posts, settings } = useApp();
@@ -9,6 +10,11 @@ const BlogPage: React.FC = () => {
 
   return (
     <div className="pt-32 pb-24 bg-[#0A0A0A] min-h-screen">
+      <SEO
+        title="Journal"
+        description={content.subheadline || "Stories and updates from the Jollof Kigali team."}
+        url="/blog"
+      />
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-20">
           <h1 className="text-5xl md:text-7xl font-bold mb-4 serif">{content.headline}</h1>
