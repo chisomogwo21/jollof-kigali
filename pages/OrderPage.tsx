@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../AppContext';
 import { Trash2, ShoppingCart, MessageCircle, CreditCard, Loader2, Smartphone, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -8,7 +8,7 @@ const OrderPage: React.FC = () => {
   const { cart, removeFromCart, clearCart, settings, updateOrders, orders } = useApp();
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', note: '' });
   const [deliveryLocation, setDeliveryLocation] = useState('');
-  const [placed, setPlaced] = useState(false);
+  const [placedType, setPlacedType] = useState<'momo' | 'whatsapp' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMomoPrompt, setShowMomoPrompt] = useState(false);
 
@@ -20,26 +20,34 @@ const OrderPage: React.FC = () => {
     return 0; // Default when empty
   };
 
-  const subtotal = cart.reduce((acc, curr) => acc + (curr.item.price + (curr.swallowPrice || 0) + (curr.proteinPrice || 0)) * curr.quantity, 0);
-  const takeawayCost = cart.reduce((acc, curr) => acc + (curr.item.subcategory === 'Soups' ? 1000 : 500) * curr.quantity, 0);
-  const delivery = (subtotal > 0 && deliveryLocation !== '') ? calculateDeliveryFee(deliveryLocation) : 0;
-  const total = subtotal + delivery + takeawayCost;
+  useEffect(() => {
+    if (cart.length === 0 && !placedType) {
+      window.location.hash = '/';
+    }
+  }, [cart.length, placedType]);
 
-  const handleCheckoutInit = (type: 'online' | 'momo' | 'whatsapp') => {
-    if (!formData.name || !formData.phone || deliveryLocation === '') {
+  const subtotal = cart.reduce((sum, { item, quantity, swallowPrice = 0, proteinPrice = 0 }) =>
+    sum + ((item.price + swallowPrice + proteinPrice) * quantity), 0
+  );
+
+  const takeawayCost = cart.reduce((sum, { quantity }) => sum + (300 * quantity), 0);
+  const delivery = calculateDeliveryFee(deliveryLocation);
+  const total = subtotal + takeawayCost + delivery;
+
+  const handleCheckoutInit = (type: 'momo' | 'whatsapp') => {
+    if (!formData.name || !formData.phone || !deliveryLocation) {
       alert("Please enter your name, phone number, and choose your sector.");
       return;
     }
 
     if (type === 'momo') {
       setShowMomoPrompt(true);
-      return;
+    } else {
+      processOrder('whatsapp');
     }
-
-    processOrder(type);
   };
 
-  const processOrder = async (type: 'online' | 'momo' | 'whatsapp') => {
+  const processOrder = async (type: 'momo' | 'whatsapp') => {
     setIsSubmitting(true);
 
     const orderDetails = cart.map(i => `${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}]` : ''} ${i.protein ? `[${i.protein}]` : ''} ${i.swallow ? `w/ ${i.swallow}` : ''} (x${i.quantity})`).join(', ');
@@ -106,7 +114,7 @@ const OrderPage: React.FC = () => {
         // Ensure the WhatsApp number strictly contains digits (removes + or spaces)
         let waNumber = settings.contact.whatsapp.replace(/\D/g, '');
         // If it starts with 0 instead of country code, we may need to handle that, but assuming 250 is standard
-        if (waNumber.startsWith('078')) {
+        if (waNumber.startsWith('0')) {
           waNumber = '25' + waNumber;
         }
 
@@ -115,7 +123,7 @@ const OrderPage: React.FC = () => {
 
       clearCart();
       setShowMomoPrompt(false);
-      setPlaced(true);
+      setPlacedType(type);
     } catch (error) {
       console.error("Submission failed:", error);
       alert("Failed to process order. Please check your connection or try via WhatsApp directly.");
@@ -124,12 +132,18 @@ const OrderPage: React.FC = () => {
     }
   };
 
-  if (placed) {
+  if (placedType) {
     return (
       <div className="pt-40 pb-24 px-4 text-center">
         <SEO title="Order Received" url="/order" />
-        <h1 className="text-4xl md:text-6xl font-bold mb-6 serif text-gold">Thank You!</h1>
-        <p className="text-xl text-gray-400 mb-10">Your order has been received. We are processing it now.</p>
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 serif text-gold">
+          {placedType === 'whatsapp' ? 'Check Your WhatsApp!' : 'Thank You!'}
+        </h1>
+        <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+          {placedType === 'whatsapp'
+            ? 'We have generated your order details. Please complete the prompt in WhatsApp to discuss your payment options and confirm delivery.'
+            : 'Your order and payment request have been securely logged. We are processing it right now!'}
+        </p>
         <button onClick={() => window.location.hash = '/'} className="px-8 py-3 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-colors">Back to Home</button>
       </div>
     );
