@@ -54,7 +54,15 @@ const MenuPage: React.FC = () => {
       return;
     }
 
-    const isAbula = item.name.toLowerCase().includes('abula');
+    const itemNameLower = item.name.toLowerCase();
+
+    // Skip modal for fries/french fries
+    if (itemNameLower.includes('fries')) {
+      addToCart(item);
+      return;
+    }
+
+    const isAbula = itemNameLower.includes('abula');
     const hasVariants = item.proteinPrices && Object.keys(item.proteinPrices).length > 0;
 
     // Open configuration modal for all food items to at least select spice level
@@ -146,9 +154,9 @@ const MenuPage: React.FC = () => {
 
       {/* Universal Configuration Modal */}
       {selectingSoup && (
-        <div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-sm overflow-y-auto pt-24 pb-12">
-          <div className="bg-[#111] p-8 max-w-md w-full border border-gold/30 relative">
-            <h3 className="text-2xl font-bold serif text-gold mb-2">Customize your {selectingSoup.name}</h3>
+        <div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+          <div className="bg-[#111] p-6 max-w-md w-full border border-gold/30 relative max-h-[85vh] overflow-y-auto custom-scrollbar">
+            <h3 className="text-2xl font-bold serif text-gold mb-4 sticky top-0 bg-[#111] pt-2 z-10">Customize your {selectingSoup.name}</h3>
 
             {/* Protein / Variant Selection */}
             {selectingSoup.proteinPrices && Object.keys(selectingSoup.proteinPrices).length > 0 && (
