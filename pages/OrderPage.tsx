@@ -239,20 +239,23 @@ const OrderPage: React.FC = () => {
               <button
                 disabled={cart.length === 0 || isSubmitting}
                 onClick={() => handleCheckoutInit('momo')}
-                className="w-full py-4 bg-[#FFCC00] text-black font-bold uppercase tracking-widest text-xs flex items-center justify-center disabled:opacity-50 hover:bg-white transition-all"
+                className="w-full py-4 bg-[#FFCC00] text-black font-bold uppercase tracking-widest text-xs flex items-center justify-center disabled:opacity-50 hover:bg-white transition-all mb-6"
               >
                 {isSubmitting ? <Loader2 className="animate-spin mr-2" size={18} /> : <Smartphone size={18} className="mr-2" />}
                 Pay via Mobile Money
               </button>
 
-              <button
-                disabled={cart.length === 0 || isSubmitting}
-                onClick={() => handleCheckoutInit('online')}
-                className="w-full py-4 border border-gold text-gold hover:bg-gold hover:text-black font-bold uppercase tracking-widest text-xs flex items-center justify-center disabled:opacity-50 transition-all font-serif"
-              >
-                {isSubmitting ? <Loader2 className="animate-spin mr-2" size={18} /> : <CreditCard size={18} className="mr-2" />}
-                Pay on Delivery
-              </button>
+              <div className="pt-6 border-t border-white/10 text-center">
+                <p className="text-gray-400 text-sm mb-4">For more payment options, contact us</p>
+                <button
+                  disabled={cart.length === 0 || isSubmitting}
+                  onClick={() => handleCheckoutInit('whatsapp')}
+                  className="w-full py-4 border border-[#25D366] text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center disabled:opacity-50 transition-all font-serif"
+                >
+                  {isSubmitting ? <Loader2 className="animate-spin mr-2" size={18} /> : <MessageCircle size={18} className="mr-2" />}
+                  Order via WhatsApp
+                </button>
+              </div>
 
             </div>
           </div>
