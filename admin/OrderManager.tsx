@@ -43,6 +43,7 @@ const OrderManager: React.FC = () => {
                 <td className="p-4">
                   <p className="font-bold text-sm">{order.customerName}</p>
                   <p className="text-[10px] text-gray-500">{order.customerPhone}</p>
+                  <p className="text-[10px] text-gray-400 mt-1">{new Date(order.createdAt).toLocaleString()}</p>
                 </td>
                 <td className="p-4">
                   <p className="text-[11px] text-gray-400">
@@ -55,10 +56,10 @@ const OrderManager: React.FC = () => {
                 <td className="p-4 font-bold text-gold text-sm">{order.totalPrice.toLocaleString()} RWF</td>
                 <td className="p-4">
                   <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-sm ${order.status === 'payment_pending' ? 'bg-yellow-500/20 text-yellow-500' :
-                      order.status === 'pending' ? 'bg-orange-500/20 text-orange-500' :
-                        order.status === 'confirmed' ? 'bg-blue-500/20 text-blue-500' :
-                          order.status === 'delivered' ? 'bg-green-500/20 text-green-500' :
-                            'bg-red-500/20 text-red-500'
+                    order.status === 'pending' ? 'bg-orange-500/20 text-orange-500' :
+                      order.status === 'confirmed' ? 'bg-blue-500/20 text-blue-500' :
+                        order.status === 'delivered' ? 'bg-green-500/20 text-green-500' :
+                          'bg-red-500/20 text-red-500'
                     }`}>
                     {order.status.replace('_', ' ')}
                   </span>

@@ -7,20 +7,23 @@ import { useApp } from '../AppContext';
 const AdminLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logoutAdmin } = useApp();
+  const { logoutAdmin, orders, reservations } = useApp();
 
   const handleLogout = () => {
     logoutAdmin();
     navigate('/');
   };
 
+  const pendingOrdersCount = orders.filter(o => o.status === 'pending' || o.status === 'payment_pending').length;
+  const pendingReservationsCount = reservations.filter(r => r.status === 'pending').length;
+
   const menuItems = [
-    { name: 'Overview', path: '/admin', icon: LayoutDashboard },
-    { name: 'Menu Items', path: '/admin/menu', icon: Utensils },
-    { name: 'Orders', path: '/admin/orders', icon: ShoppingCart },
-    { name: 'Reservations', path: '/admin/reservations', icon: Calendar },
-    { name: 'Blog Posts', path: '/admin/blog', icon: FileText },
-    { name: 'Site Settings', path: '/admin/settings', icon: Settings },
+    { name: 'Overview', path: '/admin', icon: LayoutDashboard, badge: 0 },
+    { name: 'Menu Items', path: '/admin/menu', icon: Utensils, badge: 0 },
+    { name: 'Orders', path: '/admin/orders', icon: ShoppingCart, badge: pendingOrdersCount },
+    { name: 'Reservations', path: '/admin/reservations', icon: Calendar, badge: pendingReservationsCount },
+    { name: 'Blog Posts', path: '/admin/blog', icon: FileText, badge: 0 },
+    { name: 'Site Settings', path: '/admin/settings', icon: Settings, badge: 0 },
   ];
 
   return (
@@ -38,16 +41,23 @@ const AdminLayout: React.FC = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center space-x-3 px-4 py-3 transition-colors rounded-sm uppercase tracking-widest text-[10px] font-bold ${isActive ? 'bg-gold text-black' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+                className={`flex items-center justify-between px-4 py-3 transition-colors rounded-sm uppercase tracking-widest text-[10px] font-bold ${isActive ? 'bg-gold text-black' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
               >
-                <Icon size={16} />
-                <span>{item.name}</span>
+                <div className="flex items-center space-x-3">
+                  <Icon size={16} />
+                  <span>{item.name}</span>
+                </div>
+                {item.badge > 0 && (
+                  <span className={`px-2 py-0.5 rounded-full text-[9px] font-black ${isActive ? 'bg-black text-gold' : 'bg-red-500 text-white'}`}>
+                    {item.badge}
+                  </span>
+                )}
               </Link>
             );
           })}
         </nav>
         <div className="p-4 border-t border-white/10 space-y-2">
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center space-x-3 px-4 py-3 text-red-500/60 hover:text-red-500 text-[10px] uppercase font-bold tracking-widest hover:bg-red-500/5 transition-colors"
           >

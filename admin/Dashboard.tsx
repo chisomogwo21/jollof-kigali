@@ -7,11 +7,20 @@ import { TrendingUp, Users, ShoppingBag, DollarSign } from 'lucide-react';
 const Dashboard: React.FC = () => {
   const { orders, reservations, menu } = useApp();
 
-  const totalRevenue = orders.reduce((sum, o) => sum + o.totalPrice, 0);
-  
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  const currentMonthOrders = orders.filter(o => {
+    const d = new Date(o.createdAt);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  });
+
+  const totalRevenue = currentMonthOrders.reduce((sum, o) => sum + o.totalPrice, 0);
+
   const stats = [
-    { label: 'Total Revenue', value: `${totalRevenue.toLocaleString()} RWF`, icon: DollarSign, color: 'text-green-500' },
-    { label: 'Active Orders', value: orders.filter(o => o.status === 'pending').length, icon: ShoppingBag, color: 'text-blue-500' },
+    { label: 'Revenue (This Month)', value: `${totalRevenue.toLocaleString()} RWF`, icon: DollarSign, color: 'text-green-500' },
+    { label: 'Active Orders', value: orders.filter(o => o.status === 'pending' || o.status === 'payment_pending').length, icon: ShoppingBag, color: 'text-blue-500' },
     { label: 'Reservations', value: reservations.length, icon: Users, color: 'text-purple-500' },
     { label: 'Menu Items', value: menu.length, icon: TrendingUp, color: 'text-gold' },
   ];
@@ -62,21 +71,21 @@ const Dashboard: React.FC = () => {
 
         {/* Recent Orders */}
         <div className="bg-black/40 border border-white/5 p-8 rounded-sm overflow-hidden">
-          <h3 className="text-sm uppercase tracking-widest text-gray-400 font-bold mb-8">Recent Orders</h3>
+          <h3 className="text-sm uppercase tracking-widest text-gray-400 font-bold mb-8">Recent Orders (This Month)</h3>
           <div className="space-y-6">
-            {orders.slice(0, 5).map(order => (
+            {currentMonthOrders.slice(0, 5).map(order => (
               <div key={order.id} className="flex justify-between items-center border-b border-white/5 pb-4">
                 <div>
                   <p className="text-sm font-bold">{order.customerName}</p>
-                  <p className="text-[10px] text-gray-500 uppercase">{new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p className="text-[10px] text-gray-500 uppercase">{new Date(order.createdAt).toLocaleString()}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gold font-bold">{order.totalPrice.toLocaleString()} RWF</p>
-                  <p className={`text-[9px] uppercase font-bold ${order.status === 'pending' ? 'text-orange-500' : 'text-green-500'}`}>{order.status}</p>
+                  <p className={`text-[9px] uppercase font-bold ${order.status === 'pending' || order.status === 'payment_pending' ? 'text-orange-500' : 'text-green-500'}`}>{order.status.replace('_', ' ')}</p>
                 </div>
               </div>
             ))}
-            {orders.length === 0 && <p className="text-center text-gray-600 italic py-10">No orders yet</p>}
+            {currentMonthOrders.length === 0 && <p className="text-center text-gray-600 italic py-10">No orders this month yet</p>}
           </div>
         </div>
       </div>
