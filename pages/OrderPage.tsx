@@ -14,9 +14,9 @@ const OrderPage: React.FC = () => {
 
   // Delivery Fee Logic
   const calculateDeliveryFee = (location: string) => {
-    if (location === 'Nyarugenge, Kacyiru, Kimihurura, Remera, Kicukiro') return 2000;
-    if (location === 'Kagugu, Kibagabaga, Gaculiro') return 3000;
-    if (location === 'Kanombe, Ndera, Masaka, Gisozi, Kabeza, Nyamata') return 4000;
+    if (location === 'Nyarugenge, Kacyiru, Kimihurura, Remera, Kicukiro, Kabeza, Kibagabaga, Gacuriro, Gaculiro') return 2000;
+    if (location === 'Kagugu') return 3000;
+    if (location === 'Kanombe, Ndera, Masaka, Gisozi, Nyamata') return 4000;
     return 0; // Default when empty
   };
 
@@ -42,7 +42,7 @@ const OrderPage: React.FC = () => {
   const processOrder = async (type: 'online' | 'momo' | 'whatsapp') => {
     setIsSubmitting(true);
 
-    const orderDetails = cart.map(i => `${i.item.name} ${i.protein ? `[${i.protein}]` : ''} ${i.swallow ? `w/ ${i.swallow}` : ''} (x${i.quantity})`).join(', ');
+    const orderDetails = cart.map(i => `${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}]` : ''} ${i.protein ? `[${i.protein}]` : ''} ${i.swallow ? `w/ ${i.swallow}` : ''} (x${i.quantity})`).join(', ');
     const submissionData = {
       _subject: `New ${type.toUpperCase()} Order from ${formData.name}`,
       "Order Type": type,
@@ -101,7 +101,7 @@ const OrderPage: React.FC = () => {
       }
 
       if (type === 'whatsapp') {
-        const message = `*New Order from Jollof Kigali*%0A---%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Order:*%0A${cart.map(i => `- ${i.item.name} ${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('%0A')}%0A---%0A*Subtotal:* ${subtotal.toLocaleString()} RWF%0A*Takeaway:* ${takeawayCost.toLocaleString()} RWF%0A*Delivery (${deliveryLocation}):* ${delivery.toLocaleString()} RWF%0A*Total:* ${total.toLocaleString()} RWF`;
+        const message = `*New Order from Jollof Kigali*%0A---%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Order:*%0A${cart.map(i => `- ${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}] ` : ''}${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('%0A')}%0A---%0A*Subtotal:* ${subtotal.toLocaleString()} RWF%0A*Takeaway:* ${takeawayCost.toLocaleString()} RWF%0A*Delivery (${deliveryLocation}):* ${delivery.toLocaleString()} RWF%0A*Total:* ${total.toLocaleString()} RWF`;
 
         // Ensure the WhatsApp number strictly contains digits (removes + or spaces)
         let waNumber = settings.contact.whatsapp.replace(/\D/g, '');
@@ -156,11 +156,12 @@ const OrderPage: React.FC = () => {
             </div>
           ) : (
             <div className="space-y-6">
-              {cart.map(({ id, item, quantity, swallow, swallowPrice, protein, proteinPrice }) => (
+              {cart.map(({ id, item, quantity, swallow, swallowPrice, protein, proteinPrice, spiceLevel }) => (
                 <div key={id} className="flex gap-6 bg-[#111] p-6 border border-white/5 relative group">
                   <img src={item.image} className="w-24 h-24 object-contain bg-black/50" alt={item.name} />
                   <div className="flex-grow">
                     <h3 className="text-xl font-bold serif text-gold">{item.name}</h3>
+                    {spiceLevel && <p className="text-[10px] text-white/60 mb-1 uppercase tracking-widest"><span className="text-red-500">🌶️</span> Spice: {spiceLevel}</p>}
                     {protein && <p className="text-xs text-white mb-1 opacity-80 uppercase tracking-widest">{protein}</p>}
                     {swallow && <p className="text-xs text-gold mb-1">↳ {swallow} {swallowPrice ? `(+${swallowPrice.toLocaleString()} RWF)` : ''}</p>}
                     <p className="text-gray-500 text-sm mb-2">{(item.price + (swallowPrice || 0) + (proteinPrice || 0)).toLocaleString()} RWF</p>
@@ -210,9 +211,9 @@ const OrderPage: React.FC = () => {
                 onChange={e => setDeliveryLocation(e.target.value)}
               >
                 <option value="" disabled>Choose sector *</option>
-                <option value="Nyarugenge, Kacyiru, Kimihurura, Remera, Kicukiro">Nyarugenge, Kacyiru, Kimihurura, Remera, Kicukiro</option>
-                <option value="Kagugu, Kibagabaga, Gaculiro">Kagugu, Kibagabaga, Gaculiro</option>
-                <option value="Kanombe, Ndera, Masaka, Gisozi, Kabeza, Nyamata">Kanombe, Ndera, Masaka, Gisozi, Kabeza, Nyamata</option>
+                <option value="Nyarugenge, Kacyiru, Kimihurura, Remera, Kicukiro, Kabeza, Kibagabaga, Gacuriro, Gaculiro">Nyarugenge, Kacyiru, Kimihurura, Remera, Kicukiro, Kabeza, Kibagabaga, Gacuriro, Gaculiro</option>
+                <option value="Kagugu">Kagugu</option>
+                <option value="Kanombe, Ndera, Masaka, Gisozi, Nyamata">Kanombe, Ndera, Masaka, Gisozi, Nyamata</option>
               </select>
             </div>
 

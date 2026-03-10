@@ -10,10 +10,10 @@ interface AppContextType {
   reservations: Reservation[];
   settings: SiteSettings;
   posts: BlogPost[];
-  cart: { id: string; item: MenuItem; quantity: number; swallow?: string; swallowPrice?: number; protein?: string; proteinPrice?: number }[];
+  cart: { id: string; item: MenuItem; quantity: number; swallow?: string; swallowPrice?: number; protein?: string; proteinPrice?: number; spiceLevel?: string }[];
   isAdminAuthenticated: boolean;
   logoutAdmin: () => Promise<void>;
-  addToCart: (item: MenuItem, swallow?: string, swallowPrice?: number, protein?: string, proteinPrice?: number) => void;
+  addToCart: (item: MenuItem, swallow?: string, swallowPrice?: number, protein?: string, proteinPrice?: number, spiceLevel?: string) => void;
   removeFromCart: (cartItemId: string) => void;
   clearCart: () => void;
   updateSettings: (s: SiteSettings) => void;
@@ -64,7 +64,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [settings, setSettings] = useState<SiteSettings>(INITIAL_SETTINGS);
   const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [cart, setCart] = useState<{ id: string; item: MenuItem; quantity: number; swallow?: string; swallowPrice?: number; protein?: string; proteinPrice?: number }[]>([]);
+  const [cart, setCart] = useState<{ id: string; item: MenuItem; quantity: number; swallow?: string; swallowPrice?: number; protein?: string; proteinPrice?: number; spiceLevel?: string }[]>([]);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
@@ -217,13 +217,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return url.toString();
   };
 
-  const addToCart = (item: MenuItem, swallow?: string, swallowPrice?: number, protein?: string, proteinPrice?: number) => {
+  const addToCart = (item: MenuItem, swallow?: string, swallowPrice?: number, protein?: string, proteinPrice?: number, spiceLevel?: string) => {
     setCart(prev => {
-      const existing = prev.find(i => i.item.id === item.id && i.swallow === swallow && i.protein === protein);
+      const existing = prev.find(i => i.item.id === item.id && i.swallow === swallow && i.protein === protein && i.spiceLevel === spiceLevel);
       if (existing) {
         return prev.map(i => i.id === existing.id ? { ...i, quantity: i.quantity + 1 } : i);
       }
-      return [...prev, { id: Math.random().toString(36).substr(2, 9), item, quantity: 1, swallow, swallowPrice, protein, proteinPrice }];
+      return [...prev, { id: Math.random().toString(36).substr(2, 9), item, quantity: 1, swallow, swallowPrice, protein, proteinPrice, spiceLevel }];
     });
   };
 

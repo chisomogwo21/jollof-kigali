@@ -12,6 +12,7 @@ const MenuPage: React.FC = () => {
   const [selectingSoup, setSelectingSoup] = useState<any>(null);
   const [selectedProtein, setSelectedProtein] = useState('');
   const [selectedSwallow, setSelectedSwallow] = useState('');
+  const [selectedSpiceLevel, setSelectedSpiceLevel] = useState('Medium');
 
   const content = settings.pageContent.menu;
 
@@ -24,6 +25,8 @@ const MenuPage: React.FC = () => {
     { name: 'Served with Fufu', price: 3000 },
     { name: 'Served with Oatflour', price: 3000 },
   ];
+
+  const SPICE_LEVELS = ['No Spice', 'Medium', 'Hot'];
 
   const mainCategories = ['All', ...Object.keys(MENU_CATEGORIES)];
   const availableSubcategories = activeCategory !== 'All' ? MENU_CATEGORIES[activeCategory as keyof typeof MENU_CATEGORIES] : [];
@@ -46,16 +49,19 @@ const MenuPage: React.FC = () => {
       return;
     }
 
+    if (item.category === 'Drinks') {
+      addToCart(item);
+      return;
+    }
+
     const isAbula = item.name.toLowerCase().includes('abula');
     const hasVariants = item.proteinPrices && Object.keys(item.proteinPrices).length > 0;
 
-    if (item.subcategory === 'Soups' || hasVariants) {
-      setSelectingSoup(item);
-      setSelectedProtein(hasVariants ? Object.keys(item.proteinPrices)[0] : '');
-      setSelectedSwallow(isAbula ? 'Included Amala' : SWALLOW_OPTIONS[0].name);
-    } else {
-      addToCart(item);
-    }
+    // Open configuration modal for all food items to at least select spice level
+    setSelectingSoup(item);
+    setSelectedProtein(hasVariants ? Object.keys(item.proteinPrices)[0] : '');
+    setSelectedSwallow(isAbula ? 'Included Amala' : SWALLOW_OPTIONS[0].name);
+    setSelectedSpiceLevel('Medium');
   };
 
   return (
@@ -117,7 +123,9 @@ const MenuPage: React.FC = () => {
               <div className="p-8">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-xl font-bold serif text-gold">{item.name}</h3>
-                  <span className="text-lg font-bold">{item.price.toLocaleString()} RWF</span>
+                  {item.category !== 'Catering / Buffet' && (
+                    <span className="text-lg font-bold">{item.price.toLocaleString()} RWF</span>
+                  )}
                 </div>
                 {item.category === 'Catering / Buffet' ? (
                   <p className="text-gray-400 text-sm mb-6 leading-relaxed whitespace-pre-wrap">{item.description}</p>
@@ -193,6 +201,28 @@ const MenuPage: React.FC = () => {
                 </div>
               </>
             )}
+
+            {/* Spice Level Selection (For all non-drinks/catering items) */}
+            <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-white/10 pb-2">
+              Select Spice Level
+            </p>
+            <div className="space-y-3 mb-8">
+              {SPICE_LEVELS.map(level => (
+                <label key={level} className={`flex items-center justify-between p-4 border cursor-pointer transition-colors ${selectedSpiceLevel === level ? 'border-gold bg-gold/5' : 'border-white/5 hover:border-white/20'}`}>
+                  <div className="flex items-center">
+                    <input
+                      type="radio"
+                      className="accent-gold mr-3"
+                      name="spice"
+                      checked={selectedSpiceLevel === level}
+                      onChange={() => setSelectedSpiceLevel(level)}
+                    />
+                    <span className={`text-sm font-medium ${selectedSpiceLevel === level ? 'text-gold' : 'text-gray-300'}`}>{level}</span>
+                  </div>
+                </label>
+              ))}
+            </div>
+
             <div className="flex justify-end space-x-4">
               <button
                 onClick={() => setSelectingSoup(null)}
@@ -211,7 +241,7 @@ const MenuPage: React.FC = () => {
                   const pPrice = selectingSoup.proteinPrices ? selectingSoup.proteinPrices[selectedProtein] : selectingSoup.price;
                   const valOfProteinToAdd = selectingSoup.proteinPrices ? (pPrice - selectingSoup.price) : 0;
 
-                  addToCart(selectingSoup, opt?.name, opt?.price, selectedProtein, valOfProteinToAdd);
+                  addToCart(selectingSoup, opt?.name, opt?.price, selectedProtein, valOfProteinToAdd, selectedSpiceLevel);
                   setSelectingSoup(null);
                 }}
                 className="px-8 py-3 bg-gold text-black uppercase font-bold text-xs tracking-widest hover:bg-white transition-colors"
