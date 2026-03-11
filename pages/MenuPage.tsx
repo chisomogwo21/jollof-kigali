@@ -246,10 +246,11 @@ const MenuPage: React.FC = () => {
                   // Only apply swallow modifier if it's a Soup (and not Abula)
                   const opt = (isSoup && !isAbula) ? SWALLOW_OPTIONS.find(o => o.name === selectedSwallow) : null;
 
-                  const pPrice = selectingSoup.proteinPrices ? selectingSoup.proteinPrices[selectedProtein] : selectingSoup.price;
-                  const valOfProteinToAdd = selectingSoup.proteinPrices ? (pPrice - selectingSoup.price) : 0;
+                  const hasVariants = selectingSoup.proteinPrices && Object.keys(selectingSoup.proteinPrices).length > 0;
+                  const pPrice = hasVariants ? selectingSoup.proteinPrices[selectedProtein] : selectingSoup.price;
+                  const valOfProteinToAdd = hasVariants ? (pPrice - selectingSoup.price) : 0;
 
-                  addToCart(selectingSoup, opt?.name, opt?.price, selectedProtein, valOfProteinToAdd, selectedSpiceLevel);
+                  addToCart(selectingSoup, opt?.name, opt?.price, hasVariants ? selectedProtein : '', valOfProteinToAdd || 0, selectedSpiceLevel);
                   setSelectingSoup(null);
                 }}
                 className="px-8 py-3 bg-gold text-black uppercase font-bold text-xs tracking-widest hover:bg-white transition-colors"
