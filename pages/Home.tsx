@@ -36,11 +36,11 @@ const Home: React.FC = () => {
           <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
             {content.heroSubheadline}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to={content.heroButton1Link} className="px-10 py-4 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-all w-full sm:w-auto">
+          <div className="flex flex-row max-sm:flex-col gap-4 justify-center items-center">
+            <Link to={content.heroButton1Link} className="px-10 py-4 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-all w-auto max-sm:w-full text-center">
               {content.heroButton1Text}
             </Link>
-            <Link to={content.heroButton2Link} className="px-10 py-4 border border-white/20 hover:bg-white/10 transition-all font-bold uppercase tracking-widest w-full sm:w-auto">
+            <Link to={content.heroButton2Link} className="px-10 py-4 border border-white/20 hover:bg-white/10 transition-all font-bold uppercase tracking-widest w-auto max-sm:w-full text-center">
               {content.heroButton2Text}
             </Link>
           </div>
