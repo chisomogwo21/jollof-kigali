@@ -87,7 +87,7 @@ const Home: React.FC = () => {
                 className="w-full aspect-[4/5] object-cover rounded-sm shadow-2xl"
                 alt="Intro Section Image"
               />
-              <div className="absolute -bottom-8 -right-8 w-64 h-64 border-gold border-8 rounded-sm -z-10 hidden lg:block"></div>
+              <div className="absolute -bottom-8 -right-8 w-64 h-64 border-gold border-8 rounded-sm -z-10 block max-lg:hidden"></div>
             </div>
             <div>
               <span className="text-gold uppercase tracking-widest text-sm font-semibold mb-4 block">{content.aboutTopText}</span>

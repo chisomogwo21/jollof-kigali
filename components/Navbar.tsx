@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex space-x-8 items-center">
+          <div className="flex max-md:hidden space-x-8 items-center">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="flex max-md:hidden items-center space-x-6">
             <Link to="/menu" className="relative p-2 text-gray-300 hover:text-gold transition-colors">
               <ShoppingBag size={22} />
               {cartCount > 0 && (

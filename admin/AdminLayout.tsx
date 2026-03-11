@@ -29,7 +29,7 @@ const AdminLayout: React.FC = () => {
   return (
     <div className="flex h-screen bg-[#050505] text-white">
       {/* Sidebar */}
-      <aside className="w-64 bg-black border-r border-white/10 hidden lg:flex flex-col">
+      <aside className="w-64 bg-black border-r border-white/10 flex max-lg:hidden flex-col">
         <div className="p-8 border-b border-white/10">
           <h1 className="text-xl font-bold serif text-gold tracking-tight">JOLLOF Admin</h1>
         </div>
