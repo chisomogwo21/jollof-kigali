@@ -9,13 +9,6 @@ const Home: React.FC = () => {
   const featured = menu.filter(item => item.isFeatured).slice(0, 3);
   const content = settings.pageContent.home;
 
-  let waNumber = settings.contact.whatsapp.replace(/\D/g, '');
-  if (waNumber.startsWith('0')) {
-    waNumber = '25' + waNumber;
-  } else if (!waNumber.startsWith('250')) {
-    waNumber = '250' + waNumber;
-  }
-
   return (
     <div className="bg-[#0A0A0A]">
       {/* Hero Section */}
@@ -151,7 +144,7 @@ const Home: React.FC = () => {
             {content.whatsappSubheadline}
           </p>
           <a
-            href={`https://wa.me/${waNumber}?text=Hi Jollof Kigali, I'd like to place an order.`}
+            href={`https://wa.me/${settings.contact.whatsapp.replace(/\D/g, '')}?text=Hi Jollof Kigali, I'd like to place an order.`}
             className="inline-flex items-center px-10 py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-gray-900 transition-all rounded-sm"
           >
             <MessageCircle className="mr-3" /> {content.whatsappButtonText}
