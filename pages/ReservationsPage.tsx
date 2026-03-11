@@ -20,6 +20,23 @@ const ReservationsPage: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Validate and parse DD/MM/YYYY into YYYY-MM-DD for Supabase
+    const dateParts = formData.date.split('/');
+    if (dateParts.length !== 3) {
+      alert("Please enter a complete date in DD/MM/YYYY format.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const [dd, mm, yyyy] = dateParts;
+    const dbDate = `${yyyy}-${mm}-${dd}`;
+
+    if (isNaN(Date.parse(dbDate))) {
+      alert("Please enter a valid date in DD/MM/YYYY format.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const submissionData = {
       _subject: `New Table Reservation from ${formData.name}`,
       "Customer Name": formData.name,
@@ -45,7 +62,7 @@ const ReservationsPage: React.FC = () => {
           customer_name: formData.name,
           customer_phone: formData.phone,
           customer_email: formData.email,
-          reservation_date: formData.date,
+          reservation_date: dbDate,
           reservation_time: formData.time,
           guests: formData.guests,
           special_requests: formData.note,
@@ -61,6 +78,16 @@ const ReservationsPage: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length >= 3 && val.length <= 4) {
+      val = val.slice(0, 2) + '/' + val.slice(2);
+    } else if (val.length >= 5) {
+      val = val.slice(0, 2) + '/' + val.slice(2, 4) + '/' + val.slice(4, 8);
+    }
+    setFormData({ ...formData, date: val });
   };
 
   if (submitted) {
@@ -110,11 +137,12 @@ const ReservationsPage: React.FC = () => {
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">Date *</label>
                   <input
                     required
-                    type="date"
-                    min={new Date().toISOString().split('T')[0]}
-                    className="w-full bg-black border border-white/10 p-4 outline-none focus:border-gold text-white [color-scheme:dark]"
+                    type="text"
+                    placeholder="DD/MM/YYYY"
+                    maxLength={10}
+                    className="w-full bg-black border border-white/10 p-4 outline-none focus:border-gold text-white"
                     value={formData.date}
-                    onChange={e => setFormData({ ...formData, date: e.target.value })}
+                    onChange={handleDateChange}
                   />
                 </div>
                 <div>
