@@ -33,8 +33,13 @@ const MenuManager: React.FC = () => {
   const handleSave = async () => {
     if (!editingItem) return;
 
-    if (!editingItem.name || !editingItem.price) {
-      alert("Name and price are required");
+    if (!editingItem.name) {
+      alert("Name is required");
+      return;
+    }
+
+    if (editingItem.category !== 'Catering / Buffet' && !editingItem.price) {
+      alert("Price is required for non-catering items");
       return;
     }
 
@@ -135,10 +140,12 @@ const MenuManager: React.FC = () => {
                 <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Dish Name</label>
                 <input placeholder="e.g. Suya Beef" className="w-full bg-black border border-white/10 p-3 outline-none focus:border-gold" value={editingItem.name} onChange={e => setEditingItem({ ...editingItem, name: e.target.value })} />
               </div>
-              <div className="space-y-1">
-                <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Price (RWF)</label>
-                <input placeholder="0" type="number" step="any" min="0" className="w-full bg-black border border-white/10 p-3 outline-none focus:border-gold" value={editingItem.price || ''} onChange={e => setEditingItem({ ...editingItem, price: Math.round(Number(e.target.value)) || 0 })} />
-              </div>
+              {editingItem.category !== 'Catering / Buffet' && (
+                <div className="space-y-1">
+                  <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Price (RWF)</label>
+                  <input placeholder="0" type="number" step="any" min="0" className="w-full bg-black border border-white/10 p-3 outline-none focus:border-gold" value={editingItem.price || ''} onChange={e => setEditingItem({ ...editingItem, price: Math.round(Number(e.target.value)) || 0 })} />
+                </div>
+              )}
               <div className="space-y-1">
                 <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Category</label>
                 <select
@@ -177,69 +184,71 @@ const MenuManager: React.FC = () => {
             </div>
 
             {/* Universal Item Variant Builder */}
-            <div className="bg-[#1a1a1a] p-6 border border-white/5 space-y-4">
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <h3 className="text-gold font-bold uppercase tracking-widest text-xs">Item Variations & Sizes</h3>
-                  <p className="text-[10px] text-gray-400">Add options like "3-4 People", "5-7 People", or "With Seafood".</p>
-                </div>
-                <button
-                  onClick={() => {
-                    const current = { ...(editingItem.proteinPrices || {}) };
-                    current['New Protein Option'] = editingItem.price || 0;
-                    setEditingItem({ ...editingItem, proteinPrices: current });
-                  }}
-                  className="text-xs uppercase font-bold tracking-widest bg-white/10 hover:bg-white/20 px-4 py-2"
-                >
-                  + Add Option
-                </button>
-              </div>
-
-              {editingItem.proteinPrices && Object.entries(editingItem.proteinPrices).map(([key, price], index) => (
-                <div key={index} className="flex gap-4 items-center">
-                  <input
-                    type="text"
-                    value={key}
-                    onChange={(e) => {
-                      const newKey = e.target.value;
-                      const current = { ...(editingItem.proteinPrices || {}) };
-                      const val = current[key];
-                      delete current[key];
-                      current[newKey] = val;
-                      setEditingItem({ ...editingItem, proteinPrices: current });
-                    }}
-                    className="flex-grow bg-black border border-white/10 p-3 outline-none focus:border-gold text-sm"
-                    placeholder="e.g. With Goatmeat"
-                  />
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">RWF</span>
-                    <input
-                      type="number"
-                      value={price}
-                      onChange={(e) => {
-                        const current = { ...(editingItem.proteinPrices || {}) };
-                        current[key] = Math.round(Number(e.target.value)) || 0;
-                        setEditingItem({ ...editingItem, proteinPrices: current });
-                      }}
-                      className="w-32 bg-black border border-white/10 p-3 outline-none focus:border-gold text-sm"
-                    />
+            {editingItem.category !== 'Catering / Buffet' && (
+              <div className="bg-[#1a1a1a] p-6 border border-white/5 space-y-4">
+                <div className="flex justify-between items-center mb-2">
+                  <div>
+                    <h3 className="text-gold font-bold uppercase tracking-widest text-xs">Item Variations & Sizes</h3>
+                    <p className="text-[10px] text-gray-400">Add options like "3-4 People", "5-7 People", or "With Seafood".</p>
                   </div>
                   <button
                     onClick={() => {
                       const current = { ...(editingItem.proteinPrices || {}) };
-                      delete current[key];
+                      current['New Protein Option'] = editingItem.price || 0;
                       setEditingItem({ ...editingItem, proteinPrices: current });
                     }}
-                    className="text-red-500/50 hover:text-red-500"
+                    className="text-xs uppercase font-bold tracking-widest bg-white/10 hover:bg-white/20 px-4 py-2"
                   >
-                    <Trash2 size={16} />
+                    + Add Option
                   </button>
                 </div>
-              ))}
-              {(!editingItem.proteinPrices || Object.keys(editingItem.proteinPrices).length === 0) && (
-                <p className="text-xs text-gray-500 italic">No variations added. The base price will be used.</p>
-              )}
-            </div>
+
+                {editingItem.proteinPrices && Object.entries(editingItem.proteinPrices).map(([key, price], index) => (
+                  <div key={index} className="flex gap-4 items-center">
+                    <input
+                      type="text"
+                      value={key}
+                      onChange={(e) => {
+                        const newKey = e.target.value;
+                        const current = { ...(editingItem.proteinPrices || {}) };
+                        const val = current[key];
+                        delete current[key];
+                        current[newKey] = val;
+                        setEditingItem({ ...editingItem, proteinPrices: current });
+                      }}
+                      className="flex-grow bg-black border border-white/10 p-3 outline-none focus:border-gold text-sm"
+                      placeholder="e.g. With Goatmeat"
+                    />
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500">RWF</span>
+                      <input
+                        type="number"
+                        value={price}
+                        onChange={(e) => {
+                          const current = { ...(editingItem.proteinPrices || {}) };
+                          current[key] = Math.round(Number(e.target.value)) || 0;
+                          setEditingItem({ ...editingItem, proteinPrices: current });
+                        }}
+                        className="w-32 bg-black border border-white/10 p-3 outline-none focus:border-gold text-sm"
+                      />
+                    </div>
+                    <button
+                      onClick={() => {
+                        const current = { ...(editingItem.proteinPrices || {}) };
+                        delete current[key];
+                        setEditingItem({ ...editingItem, proteinPrices: current });
+                      }}
+                      className="text-red-500/50 hover:text-red-500"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                ))}
+                {(!editingItem.proteinPrices || Object.keys(editingItem.proteinPrices).length === 0) && (
+                  <p className="text-xs text-gray-500 italic">No variations added. The base price will be used.</p>
+                )}
+              </div>
+            )}
 
             <div className="space-y-1">
               <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Description</label>
@@ -297,7 +306,9 @@ const MenuManager: React.FC = () => {
                   {item.category}
                   {item.subcategory && <span className="block text-[9px] text-gray-600 truncate max-w-[120px]">↳ {item.subcategory}</span>}
                 </td>
-                <td className="p-4 font-bold text-gold text-sm">{item.price.toLocaleString()} RWF</td>
+                <td className="p-4 font-bold text-gold text-sm">
+                  {item.category === 'Catering / Buffet' ? '-' : `${item.price.toLocaleString()} RWF`}
+                </td>
                 <td className="p-4 text-right space-x-4">
                   <button onClick={() => setEditingItem(item)} className="text-gray-500 hover:text-white transition-colors"><Edit size={16} /></button>
                   <button onClick={() => handleDelete(item.id)} className="text-red-900 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
