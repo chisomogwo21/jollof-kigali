@@ -108,7 +108,14 @@ const ReservationsPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">Date *</label>
-                  <input required type="date" className="w-full bg-black border border-white/10 p-4 outline-none focus:border-gold text-white" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} />
+                  <input
+                    required
+                    type="date"
+                    min={new Date().toISOString().split('T')[0]}
+                    className="w-full bg-black border border-white/10 p-4 outline-none focus:border-gold text-white [color-scheme:dark]"
+                    value={formData.date}
+                    onChange={e => setFormData({ ...formData, date: e.target.value })}
+                  />
                 </div>
                 <div>
                   <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">Time *</label>
