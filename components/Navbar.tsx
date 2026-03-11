@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link to="/order" className="relative p-2 text-gray-300 hover:text-gold transition-colors">
+            <Link to="/menu" className="relative p-2 text-gray-300 hover:text-gold transition-colors">
               <ShoppingBag size={22} />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 bg-gold text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
@@ -68,7 +68,7 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Toggle */}
           <div className="md:hidden flex items-center space-x-4">
-            <Link to="/order" className="relative p-2 text-gray-300">
+            <Link to="/menu" className="relative p-2 text-gray-300">
               <ShoppingBag size={22} />
               {cartCount > 0 && (
                 <span className="absolute top-0 right-0 bg-gold text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
