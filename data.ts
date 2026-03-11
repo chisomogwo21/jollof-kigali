@@ -117,7 +117,7 @@ export const INITIAL_SETTINGS: SiteSettings = {
       heroImage: "https://images.unsplash.com/photo-1628143494726-0e7880df966a?q=80&w=2000&auto=format&fit=crop",
 
       heroButton1Text: "Order Online",
-      heroButton1Link: "/order",
+      heroButton1Link: "/menu",
       heroButton2Text: "Book a Table",
       heroButton2Link: "/reservations",
 
