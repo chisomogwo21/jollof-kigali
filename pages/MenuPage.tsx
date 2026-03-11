@@ -55,9 +55,20 @@ const MenuPage: React.FC = () => {
     }
 
     const itemNameLower = item.name.toLowerCase();
+    const itemSubcategoryLower = (item.subcategory || '').toLowerCase();
 
-    // Skip modal for fries/french fries
-    if (itemNameLower.includes('fries')) {
+    // Skip modal for specific items that don't need spice levels
+    const skipModal =
+      itemNameLower.includes('fries') ||
+      itemNameLower.includes('swallow') ||
+      itemSubcategoryLower.includes('salad') ||
+      itemNameLower.includes('salad') ||
+      itemNameLower.includes('plain rice') ||
+      itemNameLower.includes('plantain') ||
+      itemNameLower.includes('dodo') ||
+      itemNameLower.includes('coleslaw');
+
+    if (skipModal) {
       addToCart(item);
       return;
     }
