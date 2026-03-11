@@ -37,7 +37,7 @@ const Home: React.FC = () => {
             {content.heroSubheadline}
           </p>
           <div className="flex flex-row max-sm:flex-col gap-4 justify-center items-center">
-            <Link to={content.heroButton1Link} className="px-10 py-4 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-all w-auto max-sm:w-full text-center">
+            <Link to="/menu" className="px-10 py-4 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-all w-auto max-sm:w-full text-center">
               {content.heroButton1Text}
             </Link>
             <Link to={content.heroButton2Link} className="px-10 py-4 border border-white/20 hover:bg-white/10 transition-all font-bold uppercase tracking-widest w-auto max-sm:w-full text-center">
