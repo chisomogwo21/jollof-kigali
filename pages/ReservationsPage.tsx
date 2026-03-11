@@ -32,7 +32,7 @@ const ReservationsPage: React.FC = () => {
     };
 
     try {
-      await fetch("https://formspree.io/f/mgoevezk", {
+      await fetch("https://formspree.io/f/xvzwazob", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),

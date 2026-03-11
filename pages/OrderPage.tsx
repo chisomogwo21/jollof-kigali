@@ -71,7 +71,7 @@ const OrderPage: React.FC = () => {
 
     try {
       // Submit to Formspree
-      await fetch("https://formspree.io/f/mgoevezk", {
+      await fetch("https://formspree.io/f/xpqydqzr", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),

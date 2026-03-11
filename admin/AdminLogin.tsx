@@ -50,7 +50,7 @@ const AdminLogin: React.FC = () => {
               required
               autoFocus
               className="w-full bg-black border border-white/10 p-4 outline-none focus:border-gold transition-colors text-white text-sm mb-4"
-              placeholder="admin@jollofkigali.com"
+              placeholder=""
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
