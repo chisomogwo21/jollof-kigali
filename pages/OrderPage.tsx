@@ -113,9 +113,13 @@ const OrderPage: React.FC = () => {
 
         // Ensure the WhatsApp number strictly contains digits (removes + or spaces)
         let waNumber = settings.contact.whatsapp.replace(/\D/g, '');
-        // If it starts with 0 instead of country code, we may need to handle that, but assuming 250 is standard
+
+        // If it's a local Rwandan number starting with 0, drop the 0 and add 250
         if (waNumber.startsWith('0')) {
           waNumber = '25' + waNumber;
+        } else if (!waNumber.startsWith('250')) {
+          // If it doesn't start with 250 or 0, carefully prepend 250 just in case
+          waNumber = '250' + waNumber;
         }
 
         window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
