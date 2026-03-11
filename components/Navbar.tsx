@@ -67,18 +67,20 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Mobile Toggle */}
-          <div className="md:hidden flex items-center space-x-4">
-            <Link to="/menu" className="relative p-2 text-gray-300">
-              <ShoppingBag size={22} />
-              {cartCount > 0 && (
-                <span className="absolute top-0 right-0 bg-gold text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-300">
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+          <div className="md:hidden">
+            <div className="flex items-center space-x-4">
+              <Link to="/menu" className="relative p-2 text-gray-300">
+                <ShoppingBag size={22} />
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 bg-gold text-black text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <button onClick={() => setIsOpen(!isOpen)} className="text-gray-300">
+                {isOpen ? <X size={28} /> : <Menu size={28} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
