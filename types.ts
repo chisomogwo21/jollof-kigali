@@ -25,6 +25,7 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
   type: 'online' | 'whatsapp';
+  orderSummary?: string;
 }
 
 export interface Reservation {

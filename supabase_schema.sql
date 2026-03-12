@@ -43,6 +43,7 @@ CREATE TABLE public.orders (
     total_price NUMERIC NOT NULL,
     status TEXT DEFAULT 'pending',
     type TEXT DEFAULT 'online',
+    order_summary TEXT, -- Added for full customization details
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
@@ -133,4 +134,5 @@ using ( bucket_id = 'jollof_images' );
 DROP POLICY IF EXISTS "Anon Delete Access" ON storage.objects;
 create policy "Anon Delete Access"
 on storage.objects for delete
-using ( bucket_id = 'jollof_images' );
+-- MIGRATION: Run this if you already have the orders table
+-- ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS order_summary TEXT;

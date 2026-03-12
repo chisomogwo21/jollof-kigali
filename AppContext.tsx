@@ -170,7 +170,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           items: order.order_items.map((item: any) => ({
             menuItemId: item.menu_item_id,
             quantity: item.quantity
-          }))
+          })),
+          orderSummary: order.order_summary
         })));
       }
 

@@ -47,8 +47,8 @@ const OrderManager: React.FC = () => {
                     <p className="text-[10px] text-gray-400 mt-1">{new Date(order.createdAt).toLocaleString()}</p>
                   </td>
                   <td className="p-4">
-                    <p className="text-[11px] text-gray-400">
-                      {order.items.map(i => {
+                    <p className="text-[11px] text-gray-400 whitespace-pre-wrap leading-relaxed">
+                      {order.orderSummary || order.items.map(i => {
                         const item = menu.find(m => m.id === i.menuItemId);
                         return `${item?.name || 'Item'} x${i.quantity}`;
                       }).join(', ')}

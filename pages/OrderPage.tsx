@@ -94,7 +94,8 @@ const OrderPage: React.FC = () => {
           customer_email: formData.email,
           total_price: total,
           status: initialStatus,
-          type: type === 'momo' ? 'Mobile Money' : type
+          type: type === 'momo' ? 'Mobile Money' : type,
+          order_summary: orderDetails
         })
         .select()
         .single();
