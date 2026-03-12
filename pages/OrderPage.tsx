@@ -141,9 +141,10 @@ const OrderPage: React.FC = () => {
       setPlacedType(type);
       setShowMomoPrompt(false);
       clearCart();
-    } catch (error) {
-      console.error("Submission failed:", error);
-      alert("Failed to process order. Please check your connection or try via WhatsApp directly.");
+    } catch (error: any) {
+      console.error("Order submission failed:", error);
+      const errorMessage = error.message || "Unknown error";
+      alert(`Order Error: ${errorMessage}\n\nPlease ensure you have updated the database schema if requested, or try via WhatsApp.`);
     } finally {
       setIsSubmitting(false);
     }
