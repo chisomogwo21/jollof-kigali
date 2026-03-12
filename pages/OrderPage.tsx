@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../AppContext';
 import { Trash2, ShoppingCart, MessageCircle, CreditCard, Loader2, Smartphone, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
@@ -11,6 +12,7 @@ const OrderPage: React.FC = () => {
   const [placedType, setPlacedType] = useState<'momo' | 'whatsapp' | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMomoPrompt, setShowMomoPrompt] = useState(false);
+  const navigate = useNavigate();
 
   // Delivery Fee Logic
   const calculateDeliveryFee = (location: string) => {
@@ -21,10 +23,11 @@ const OrderPage: React.FC = () => {
   };
 
   useEffect(() => {
+    // Only redirect if cart is empty AND we haven't just placed an order
     if (cart.length === 0 && !placedType) {
-      window.location.hash = '/';
+      navigate('/');
     }
-  }, [cart.length, placedType]);
+  }, [cart.length, placedType, navigate]);
 
   const subtotal = cart.reduce((sum, { item, quantity, swallowPrice = 0, proteinPrice = 0 }) =>
     sum + ((item.price + swallowPrice + proteinPrice) * quantity), 0
@@ -134,9 +137,10 @@ const OrderPage: React.FC = () => {
         window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
       }
 
-      clearCart();
-      setShowMomoPrompt(false);
+      // Important: update local state BEFORE clearing cart to prevent redirect
       setPlacedType(type);
+      setShowMomoPrompt(false);
+      clearCart();
     } catch (error) {
       console.error("Submission failed:", error);
       alert("Failed to process order. Please check your connection or try via WhatsApp directly.");
@@ -157,7 +161,7 @@ const OrderPage: React.FC = () => {
             ? 'We have generated your order details. Please complete the prompt in WhatsApp to discuss your payment options and confirm delivery.'
             : 'Your order and payment request have been securely logged. We are processing it right now!'}
         </p>
-        <button onClick={() => window.location.hash = '/'} className="px-8 py-3 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-colors">Back to Home</button>
+        <button onClick={() => navigate('/')} className="px-8 py-3 bg-gold text-black font-bold uppercase tracking-widest hover:bg-white transition-colors">Back to Home</button>
       </div>
     );
   }
@@ -179,7 +183,7 @@ const OrderPage: React.FC = () => {
           {cart.length === 0 ? (
             <div className="bg-[#111] p-20 text-center border border-white/5">
               <p className="text-gray-500 mb-8">Your basket is empty.</p>
-              <button onClick={() => window.location.hash = '/menu'} className="text-gold font-bold uppercase tracking-widest border-b border-gold/40 pb-1">Browse Menu</button>
+              <button onClick={() => navigate('/menu')} className="text-gold font-bold uppercase tracking-widest border-b border-gold/40 pb-1">Browse Menu</button>
             </div>
           ) : (
             <div className="space-y-6">
