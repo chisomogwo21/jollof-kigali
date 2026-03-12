@@ -122,7 +122,7 @@ const OrderPage: React.FC = () => {
       }
 
       if (type === 'whatsapp') {
-        const message = `*New Order from Jollof Kigali*\n---\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Order:*\n${cart.map(i => `- ${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}] ` : ''}${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('\n')}\n---\n*Subtotal:* ${subtotal.toLocaleString()} RWF\n*Takeaway:* ${takeawayCost.toLocaleString()} RWF\n*Delivery (${deliveryLocation}):* ${delivery.toLocaleString()} RWF\n*Total:* ${total.toLocaleString()} RWF`;
+        const message = `*New Order from Jollof Kigali*\n---\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Order:*\n${cart.map(i => `- ${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}] ` : ''}${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('\n')}\n---\n*Subtotal:* ${subtotal.toLocaleString()} RWF\n*Takeaway:* ${takeawayCost.toLocaleString()} RWF\n*Delivery (${deliveryLocation}):* ${delivery.toLocaleString()} RWF\n*Total:* ${total.toLocaleString()} RWF\n---\n*Payment:* I would like to discuss more payment options for this order.`;
 
         window.open(formatWhatsAppUrl(settings.contact.whatsapp, message), '_blank');
       }
@@ -133,8 +133,17 @@ const OrderPage: React.FC = () => {
       clearCart();
     } catch (error: any) {
       console.error("Order submission failed:", error);
-      const errorMessage = error.message || "Unknown error";
-      alert(`Order Error: ${errorMessage}\n\nPlease ensure you have updated the database schema if requested, or try via WhatsApp.`);
+
+      // Even if database/formspree fails, if it's a WhatsApp order, we should still try to open WhatsApp
+      if (type === 'whatsapp') {
+        const message = `*New Order from Jollof Kigali (Manual)*\n---\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Order:*\n${cart.map(i => `- ${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}] ` : ''}${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('\n')}\n---\n*Total:* ${total.toLocaleString()} RWF\n---\n*Payment:* I would like to discuss more payment options for this order.`;
+        window.open(formatWhatsAppUrl(settings.contact.whatsapp, message), '_blank');
+        setPlacedType(type);
+        clearCart();
+      } else {
+        const errorMessage = error.message || "Unknown error";
+        alert(`Order Error: ${errorMessage}\n\nPlease ensure you have updated the database schema if requested, or try via WhatsApp.`);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -276,7 +285,7 @@ const OrderPage: React.FC = () => {
                   className="w-full py-4 border border-[#25D366] text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center disabled:opacity-50 transition-all font-serif"
                 >
                   {isSubmitting ? <Loader2 className="animate-spin mr-2" size={18} /> : <MessageCircle size={18} className="mr-2" />}
-                  Order via WhatsApp
+                  ORDER VIA WHATSAPP
                 </button>
               </div>
 
