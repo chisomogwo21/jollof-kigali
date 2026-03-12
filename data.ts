@@ -98,9 +98,9 @@ export const INITIAL_SETTINGS: SiteSettings = {
     weekend: '12:00 PM - 11:00 PM',
   },
   socialLinks: {
-    instagram: 'https://instagram.com/jollofkigali',
-    facebook: 'https://facebook.com/jollofkigali',
-    twitter: 'https://twitter.com/jollofkigali',
+    instagram: 'https://www.instagram.com/jollofkigali/',
+    facebook: 'https://www.facebook.com/jollofkigali/',
+    twitter: 'https://www.twitter.com/jollofkigali',
   },
   homepageSections: {
     hero: true,
