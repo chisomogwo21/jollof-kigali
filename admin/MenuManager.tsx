@@ -113,21 +113,21 @@ const MenuManager: React.FC = () => {
 
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold serif text-gold">Menu Management</h1>
+    <div className="space-y-6 lg:space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h1 className="text-xl lg:text-2xl font-bold serif text-gold">Menu Management</h1>
         <button
           onClick={() => setEditingItem({ name: '', price: 0, category: Object.keys(MENU_CATEGORIES)[0], subcategory: Object.values(MENU_CATEGORIES)[0][0] || '', description: '', isFeatured: false, isChefRecommendation: false, image: '', proteinPrices: {} })}
-          className="flex items-center space-x-2 bg-gold text-black px-6 py-2 rounded-sm font-bold uppercase tracking-widest text-xs"
+          className="flex items-center space-x-2 bg-gold text-black px-4 lg:px-6 py-2 rounded-sm font-bold uppercase tracking-widest text-[10px] lg:text-xs w-full sm:w-auto justify-center"
         >
           <Plus size={16} /> <span>Add New Dish</span>
         </button>
       </div>
 
       {editingItem && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-white/10 p-8 w-full max-w-2xl space-y-6 overflow-y-auto max-h-[90vh]">
-            <h2 className="text-2xl serif text-gold mb-6">{editingItem.id ? 'Edit Item' : 'New Item'}</h2>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-2 lg:p-4">
+          <div className="bg-[#111] border border-white/10 p-4 lg:p-8 w-full max-w-2xl space-y-6 overflow-y-auto max-h-[95vh]">
+            <h2 className="text-xl lg:text-2xl serif text-gold mb-6">{editingItem.id ? 'Edit Item' : 'New Item'}</h2>
 
             <ImageUpload
               label="Dish Photo"
@@ -276,47 +276,49 @@ const MenuManager: React.FC = () => {
         </div>
       )}
 
-      <div className="bg-black/40 border border-white/5 overflow-x-auto rounded-sm shadow-xl">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b border-white/10 bg-white/5">
-              <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black">Dish</th>
-              <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black">Category</th>
-              <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black">Price</th>
-              <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {menu.map(item => (
-              <tr key={item.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="p-4">
-                  <div className="flex items-center space-x-4">
-                    <img src={item.image} className="w-12 h-12 object-cover rounded-sm border border-white/10" alt="" />
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <p className="font-bold text-sm">{item.name}</p>
-                        {item.isFeatured && <div className="text-blue-500" title="Featured"><CheckCircle size={10} /></div>}
-                        {item.isChefRecommendation && <div className="text-gold" title="Chef Recommendation"><CheckCircle size={10} /></div>}
-                      </div>
-                      <p className="text-[10px] text-gray-500 truncate w-48">{item.description}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className="p-4 text-xs font-medium uppercase tracking-widest text-gray-400">
-                  {item.category}
-                  {item.subcategory && <span className="block text-[9px] text-gray-600 truncate max-w-[120px]">↳ {item.subcategory}</span>}
-                </td>
-                <td className="p-4 font-bold text-gold text-sm">
-                  {item.category === 'Catering / Buffet' ? '-' : `${item.price.toLocaleString()} RWF`}
-                </td>
-                <td className="p-4 text-right space-x-4">
-                  <button onClick={() => setEditingItem(item)} className="text-gray-500 hover:text-white transition-colors"><Edit size={16} /></button>
-                  <button onClick={() => handleDelete(item.id)} className="text-red-900 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
-                </td>
+      <div className="bg-black/40 border border-white/5 overflow-hidden rounded-sm shadow-xl">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left min-w-[600px] lg:min-w-0">
+            <thead>
+              <tr className="border-b border-white/10 bg-white/5">
+                <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black">Dish</th>
+                <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black">Category</th>
+                <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black">Price</th>
+                <th className="p-4 text-[10px] uppercase tracking-widest text-gray-500 font-black text-right">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {menu.map(item => (
+                <tr key={item.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <td className="p-4">
+                    <div className="flex items-center space-x-4">
+                      <img src={item.image} className="w-12 h-12 object-cover rounded-sm border border-white/10" alt="" />
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <p className="font-bold text-sm">{item.name}</p>
+                          {item.isFeatured && <div className="text-blue-500" title="Featured"><CheckCircle size={10} /></div>}
+                          {item.isChefRecommendation && <div className="text-gold" title="Chef Recommendation"><CheckCircle size={10} /></div>}
+                        </div>
+                        <p className="text-[10px] text-gray-500 truncate w-48">{item.description}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="p-4 text-xs font-medium uppercase tracking-widest text-gray-400">
+                    {item.category}
+                    {item.subcategory && <span className="block text-[9px] text-gray-600 truncate max-w-[120px]">↳ {item.subcategory}</span>}
+                  </td>
+                  <td className="p-4 font-bold text-gold text-sm">
+                    {item.category === 'Catering / Buffet' ? '-' : `${item.price.toLocaleString()} RWF`}
+                  </td>
+                  <td className="p-4 text-right space-x-4">
+                    <button onClick={() => setEditingItem(item)} className="text-gray-500 hover:text-white transition-colors"><Edit size={16} /></button>
+                    <button onClick={() => handleDelete(item.id)} className="text-red-900 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

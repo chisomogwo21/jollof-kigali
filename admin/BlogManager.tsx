@@ -71,21 +71,21 @@ const BlogManager: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold serif text-gold">Kitchen Table (Blog)</h1>
+    <div className="space-y-6 lg:space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h1 className="text-xl lg:text-2xl font-bold serif text-gold">Kitchen Table (Blog)</h1>
         <button
           onClick={() => setEditingPost({ title: '', excerpt: '', author: 'Management', image: '' })}
-          className="flex items-center space-x-2 bg-gold text-black px-6 py-2 rounded-sm font-bold uppercase tracking-widest text-xs"
+          className="flex items-center space-x-2 bg-gold text-black px-4 lg:px-6 py-2 rounded-sm font-bold uppercase tracking-widest text-[10px] lg:text-xs w-full sm:w-auto justify-center"
         >
           <Plus size={16} /> <span>New Story</span>
         </button>
       </div>
 
       {editingPost && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-white/10 p-8 w-full max-w-2xl space-y-6 overflow-y-auto max-h-[90vh]">
-            <h2 className="text-2xl serif text-gold mb-6">{editingPost.id ? 'Edit Story' : 'New Story'}</h2>
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-2 lg:p-4">
+          <div className="bg-[#111] border border-white/10 p-4 lg:p-8 w-full max-w-2xl space-y-6 overflow-y-auto max-h-[95vh]">
+            <h2 className="text-xl lg:text-2xl serif text-gold mb-6">{editingPost.id ? 'Edit Story' : 'New Story'}</h2>
 
             <ImageUpload
               label="Cover Image"
@@ -133,13 +133,13 @@ const BlogManager: React.FC = () => {
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
         {posts.map(post => (
-          <div key={post.id} className="bg-black/40 border border-white/5 p-6 rounded-sm flex gap-6 hover:border-gold/30 transition-all group">
-            <img src={post.image} className="w-24 h-24 object-cover border border-white/10 grayscale group-hover:grayscale-0 transition-all" alt="" />
-            <div className="flex-grow flex flex-col justify-between">
+          <div key={post.id} className="bg-black/40 border border-white/5 p-4 lg:p-6 rounded-sm flex flex-col sm:flex-row gap-4 lg:gap-6 hover:border-gold/30 transition-all group">
+            <img src={post.image} className="w-full sm:w-24 h-48 sm:h-24 object-cover border border-white/10 grayscale group-hover:grayscale-0 transition-all shrink-0" alt="" />
+            <div className="flex-grow flex flex-col justify-between overflow-hidden">
               <div>
-                <h3 className="font-bold text-gold serif text-lg mb-1">{post.title}</h3>
+                <h3 className="font-bold text-gold serif text-base lg:text-lg mb-1 truncate">{post.title}</h3>
                 <div className="flex items-center space-x-4 text-[9px] uppercase tracking-widest text-gray-500">
                   <span className="flex items-center"><Calendar size={10} className="mr-1" /> {new Date(post.date).toLocaleDateString()}</span>
                   <span className="flex items-center"><User size={10} className="mr-1" /> {post.author}</span>

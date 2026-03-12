@@ -107,16 +107,16 @@ const SiteSettingsAdmin: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-10 pb-20 max-w-6xl">
-      <div className="flex justify-between items-center bg-black p-6 border border-white/10 sticky top-[80px] z-20 shadow-2xl">
+    <div className="space-y-6 lg:space-y-10 pb-20 max-w-6xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-black p-4 lg:p-6 border border-white/10 sticky top-[64px] lg:top-[80px] z-20 shadow-2xl">
         <div>
-          <h1 className="text-2xl font-bold serif text-gold">Website CMS</h1>
-          <p className="text-[10px] uppercase tracking-widest text-gray-500">Edit and publish content across your entire platform</p>
+          <h1 className="text-xl lg:text-2xl font-bold serif text-gold">Website CMS</h1>
+          <p className="text-[9px] lg:text-[10px] uppercase tracking-widest text-gray-500">Edit and publish content across your entire platform</p>
         </div>
         <button
           onClick={handlePublish}
           disabled={!isModified}
-          className={`flex items-center space-x-3 px-10 py-4 font-bold uppercase tracking-widest rounded-sm text-xs transition-all shadow-lg ${isModified ? 'bg-gold text-black hover:bg-white' : 'bg-white/5 text-gray-600 cursor-not-allowed'}`}
+          className={`flex items-center justify-center space-x-3 w-full sm:w-auto px-6 lg:px-10 py-3 lg:py-4 font-bold uppercase tracking-widest rounded-sm text-[10px] lg:text-xs transition-all shadow-lg ${isModified ? 'bg-gold text-black hover:bg-white' : 'bg-white/5 text-gray-600 cursor-not-allowed'}`}
         >
           {isModified ? <Globe size={18} className="animate-pulse" /> : <Save size={18} />}
           <span>{isModified ? 'Publish Changes Live' : 'All Changes Published'}</span>
@@ -124,14 +124,14 @@ const SiteSettingsAdmin: React.FC = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap gap-2 border-b border-white/10 pb-4">
+      <div className="flex flex-nowrap lg:flex-wrap gap-2 overflow-x-auto lg:overflow-visible pb-4 no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 border-b border-white/10">
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-sm text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === tab.id ? 'bg-gold text-black' : 'bg-black/40 text-gray-500 hover:text-white'}`}
+            className={`flex items-center space-x-2 px-4 lg:px-6 py-2 lg:py-3 rounded-sm text-[9px] lg:text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-gold text-black' : 'bg-black/40 text-gray-500 hover:text-white'}`}
           >
-            <tab.icon size={14} />
+            <tab.icon size={12} />
             <span>{tab.label}</span>
           </button>
         ))}

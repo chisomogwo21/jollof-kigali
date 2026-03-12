@@ -38,25 +38,25 @@ const Dashboard: React.FC = () => {
   return (
     <div className="space-y-10">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {stats.map((stat, i) => (
-          <div key={i} className="bg-black/40 border border-white/5 p-6 rounded-sm">
+          <div key={i} className="bg-black/40 border border-white/5 p-4 lg:p-6 rounded-sm">
             <div className="flex justify-between items-start mb-4">
-              <div className={`p-3 rounded-sm bg-white/5 ${stat.color}`}>
-                <stat.icon size={20} />
+              <div className={`p-2 lg:p-3 rounded-sm bg-white/5 ${stat.color}`}>
+                <stat.icon size={18} />
               </div>
             </div>
-            <p className="text-gray-500 text-xs uppercase tracking-widest mb-1">{stat.label}</p>
-            <h3 className="text-2xl font-bold">{stat.value}</h3>
+            <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-1">{stat.label}</p>
+            <h3 className="text-xl lg:text-2xl font-bold">{stat.value}</h3>
           </div>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Chart */}
-        <div className="lg:col-span-2 bg-black/40 border border-white/5 p-8 rounded-sm">
-          <h3 className="text-sm uppercase tracking-widest text-gray-400 font-bold mb-8">Weekly Revenue Trend</h3>
-          <div className="h-80 w-full">
+        <div className="lg:col-span-2 bg-black/40 border border-white/5 p-4 lg:p-8 rounded-sm">
+          <h3 className="text-[10px] lg:text-sm uppercase tracking-widest text-gray-400 font-bold mb-6 lg:mb-8">Weekly Revenue Trend</h3>
+          <div className="h-64 lg:h-80 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
@@ -70,8 +70,8 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Recent Orders */}
-        <div className="bg-black/40 border border-white/5 p-8 rounded-sm overflow-hidden">
-          <h3 className="text-sm uppercase tracking-widest text-gray-400 font-bold mb-8">Recent Orders (This Month)</h3>
+        <div className="bg-black/40 border border-white/5 p-4 lg:p-8 rounded-sm overflow-hidden">
+          <h3 className="text-[10px] lg:text-sm uppercase tracking-widest text-gray-400 font-bold mb-6 lg:mb-8">Recent Orders (This Month)</h3>
           <div className="space-y-6">
             {currentMonthOrders.slice(0, 5).map(order => (
               <div key={order.id} className="flex justify-between items-center border-b border-white/5 pb-4">

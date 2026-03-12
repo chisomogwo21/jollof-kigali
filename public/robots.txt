@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Allow: /api/
 
-Sitemap: https://jollofkigali.com/sitemap.xml
+Sitemap: https://jollofkigali.net/sitemap.xml
