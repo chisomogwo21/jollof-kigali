@@ -4,6 +4,7 @@ import { useApp } from '../AppContext';
 import { Trash2, ShoppingCart, MessageCircle, CreditCard, Loader2, Smartphone, CheckCircle } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import SEO from '../components/SEO';
+import { formatWhatsAppUrl } from '../lib/utils';
 
 const OrderPage: React.FC = () => {
   const { cart, removeFromCart, clearCart, settings, updateOrders, orders } = useApp();
@@ -121,20 +122,9 @@ const OrderPage: React.FC = () => {
       }
 
       if (type === 'whatsapp') {
-        const message = `*New Order from Jollof Kigali*%0A---%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Order:*%0A${cart.map(i => `- ${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}] ` : ''}${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('%0A')}%0A---%0A*Subtotal:* ${subtotal.toLocaleString()} RWF%0A*Takeaway:* ${takeawayCost.toLocaleString()} RWF%0A*Delivery (${deliveryLocation}):* ${delivery.toLocaleString()} RWF%0A*Total:* ${total.toLocaleString()} RWF`;
+        const message = `*New Order from Jollof Kigali*\n---\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Order:*\n${cart.map(i => `- ${i.item.name} ${i.spiceLevel ? `[${i.spiceLevel}] ` : ''}${i.protein ? `[${i.protein}] ` : ''}${i.swallow ? `with ${i.swallow}` : ''} x${i.quantity}`).join('\n')}\n---\n*Subtotal:* ${subtotal.toLocaleString()} RWF\n*Takeaway:* ${takeawayCost.toLocaleString()} RWF\n*Delivery (${deliveryLocation}):* ${delivery.toLocaleString()} RWF\n*Total:* ${total.toLocaleString()} RWF`;
 
-        // Ensure the WhatsApp number strictly contains digits (removes + or spaces)
-        let waNumber = settings.contact.whatsapp.replace(/\D/g, '');
-
-        // If it's a local Rwandan number starting with 0, drop the 0 and add 250
-        if (waNumber.startsWith('0')) {
-          waNumber = '25' + waNumber;
-        } else if (!waNumber.startsWith('250')) {
-          // If it doesn't start with 250 or 0, carefully prepend 250 just in case
-          waNumber = '250' + waNumber;
-        }
-
-        window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+        window.open(formatWhatsAppUrl(settings.contact.whatsapp, message), '_blank');
       }
 
       // Important: update local state BEFORE clearing cart to prevent redirect

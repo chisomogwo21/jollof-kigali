@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, Star, Clock, MapPin, Phone, MessageCircle } from 'lucide-react';
 import { useApp } from '../AppContext';
+import { formatWhatsAppUrl } from '../lib/utils';
 
 const Home: React.FC = () => {
   const { menu, settings } = useApp();
@@ -144,7 +145,7 @@ const Home: React.FC = () => {
             {content.whatsappSubheadline}
           </p>
           <a
-            href={`https://wa.me/${settings.contact.whatsapp.replace(/\D/g, '')}?text=Hi Jollof Kigali, I'd like to place an order.`}
+            href={formatWhatsAppUrl(settings.contact.whatsapp, "Hi Jollof Kigali, I'd like to place an order.")}
             className="inline-flex items-center px-10 py-4 bg-black text-white font-bold uppercase tracking-widest hover:bg-gray-900 transition-all rounded-sm"
           >
             <MessageCircle className="mr-3" /> {content.whatsappButtonText}
