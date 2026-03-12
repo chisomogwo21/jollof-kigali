@@ -30,7 +30,15 @@ const OrderPage: React.FC = () => {
     sum + ((item.price + swallowPrice + proteinPrice) * quantity), 0
   );
 
-  const takeawayCost = cart.reduce((sum, { quantity }) => sum + (300 * quantity), 0);
+  const takeawayCost = cart.reduce((sum, { item, quantity }) => {
+    const isSoup = item.subcategory === 'Soups';
+    const isDrink = item.category === 'Drinks';
+
+    if (isDrink) return sum;
+    if (isSoup) return sum + (1000 * quantity);
+    return sum + (500 * quantity);
+  }, 0);
+
   const delivery = calculateDeliveryFee(deliveryLocation);
   const total = subtotal + takeawayCost + delivery;
 
